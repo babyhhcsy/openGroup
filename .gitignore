@@ -33,4 +33,10 @@ hs_err_pid*
 out
 gen
 .gradle
-build
+build/class
+build/download-task
+build/generated
+build/idea-sandbox
+build/patchedPluginXmlFiles
+build/resources
+build/tmp
