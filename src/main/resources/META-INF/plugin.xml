@@ -1,0 +1,22 @@
+<idea-plugin>
+    <id>com.thero.openGroup.openGroup</id>
+    <name>openGroup</name>
+    <vendor email="babyhhcsy@gmail.com" url="http://www.baidu.com">openGroup</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="worktile" icon="/icons/worktile.png" anchor="right" factoryClass="com.thero.worktile.factory.WorkTileWindowFactory"></toolWindow>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
