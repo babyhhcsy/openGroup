@@ -1,14 +1,17 @@
 package com.thero.worktile.model;
 
 import com.intellij.openapi.util.io.win32.FileInfo;
+import com.intellij.util.xml.DomElement;
+import com.intellij.util.xml.TagValue;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.util.List;
 
-public class GroupModel {
+public class GroupModel  {
     private String groupName;
     private String groupDesc;
 
-    private List<FileInfo> files;
+    private List<GroupFiles> groupFiles;
 
     public GroupModel() {
     }
@@ -17,7 +20,7 @@ public class GroupModel {
         this.groupName = groupName;
         this.groupDesc = groupDesc;
     }
-
+    @TagValue
     public String getGroupName() {
         return groupName;
     }
@@ -25,7 +28,7 @@ public class GroupModel {
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-
+    @TagValue
     public String getGroupDesc() {
         return groupDesc;
     }
@@ -34,11 +37,11 @@ public class GroupModel {
         this.groupDesc = groupDesc;
     }
 
-    public List<FileInfo> getFiles() {
-        return files;
+    public List<GroupFiles> getGroupFiles() {
+        return groupFiles;
     }
 
-    public void setFiles(List<FileInfo> files) {
-        this.files = files;
+    public void setGroupFiles(List<GroupFiles> groupFiles) {
+        this.groupFiles = groupFiles;
     }
 }

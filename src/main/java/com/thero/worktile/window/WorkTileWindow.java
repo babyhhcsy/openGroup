@@ -3,16 +3,38 @@ package com.thero.worktile.window;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.ActionToolbarPosition;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.fileTypes.StdFileTypes;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.impl.source.xml.XmlFileImpl;
+import com.intellij.psi.xml.XmlFile;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
+import com.intellij.util.xml.DomElement;
+import com.intellij.util.xml.DomFileElement;
+import com.intellij.util.xml.DomManager;
+import com.intellij.util.xml.DomUtil;
 import com.thero.worktile.actions.OpenGrouper;
 import com.thero.worktile.actions.Switcher;
 import com.thero.worktile.model.ColumnBase;
+import com.thero.worktile.model.GroupModel;
+import com.thero.worktile.model.Groups;
 import com.thero.worktile.model.Projects;
 import com.thero.worktile.util.FastJsonUtil;
+import com.thero.worktile.util.XmlUtil;
 import com.thero.worktile.view.WorktileIcons;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +42,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 
 public class WorkTileWindow {
@@ -94,6 +117,29 @@ public class WorkTileWindow {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         OpenGrouper.createAndShowOpenGrouper(e.getProject(),"open Grouper","open-gouper");
+                    }
+        }).addExtraAction(new AnActionButton("createFile",AllIcons.Actions.New) {
+                    @Override
+                    public void actionPerformed(@NotNull AnActionEvent e) {
+                        String path = e.getProject().getBasePath();
+                        DomManager domManager = DomManager.getDomManager(e.getProject());
+                        File file = new File(path+ File.separator + ".idea"+ File.separator+"open-group.xml");
+                        VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
+
+                        PsiFile xmlFile = PsiManager.getInstance(e.getProject()).findFile(virtualFile);
+                        String text = xmlFile.getText();
+                        try {
+                            Groups groups = XmlUtil.toBean(text, Groups.class);
+                        } catch (InstantiationException ex) {
+                            ex.printStackTrace();
+                        } catch (IllegalAccessException ex) {
+                            ex.printStackTrace();
+                        }
+                        XmlFileImpl temp = (XmlFileImpl) xmlFile;
+                        DomManager manager = DomManager.getDomManager(e.getProject());
+                        DomFileElement<DomElement> fileElement = manager.getFileElement(temp);
+                        Editor data = e.getData(PlatformDataKeys.EDITOR);
+
                     }
                 });
         toolPan = toolbarDecorator.createPanel();
